@@ -19,11 +19,12 @@ while True:
                     op3 = input("Which president?\nCLA (Claudio)\nFLA (Flavio)\n-> ")
                     match op3:
                         case "CLA" | "cla": pres = "Claudio"
-                        case "FLA" | "fla": pres = "Claudio"
+                        case "FLA" | "fla": pres = "Flavio"
                         case _: pres = ""
                             
                     if pres!= "":
-                        response = supabase.table(table).select("ruolo","giocatore").eq("nome_presidente", pres).execute()
+                        #response = supabase.table(table).select("ruolo","giocatore").eq("nome_presidente", pres).execute()
+                        response = read.read_contracts_for_pres(supabase, pres)
                         print(response)
                     else:
                         print(op3 + ": president not available")
