@@ -1,5 +1,6 @@
 import settings
 import read
+import create
 from supabase import create_client, Client
 
 supabase: Client = create_client(settings.url, settings.key)
@@ -23,7 +24,6 @@ while True:
                         case _: pres = ""
                             
                     if pres!= "":
-                        #response = supabase.table(table).select("ruolo","giocatore").eq("nome_presidente", pres).execute()
                         response = read.read_contracts_for_pres(supabase, pres)
                         print(response)
                     else:
@@ -31,7 +31,13 @@ while True:
 
                 case _:
                     print(op2 + ": table not available")
-        
+        case "C" | "c" | "create":
+            credentials = {}
+            credentials["email"] = input("Insert mail -> ")
+            credentials["password"] = input("Insert pw -> ")
+            supabase.auth.sign_in_with_password(credentials)
+            #create.insert_contract(supabase)
+                        
         case "E" | "e" | "exit":
             print("Terminate")
             break
