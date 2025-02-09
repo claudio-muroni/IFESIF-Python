@@ -2,6 +2,7 @@ import settings
 import read
 import create
 from supabase import create_client, Client
+from getpass import getpass
 
 supabase: Client = create_client(settings.url, settings.key)
 
@@ -34,9 +35,16 @@ while True:
         case "C" | "c" | "create":
             credentials = {}
             credentials["email"] = input("Insert mail -> ")
-            credentials["password"] = input("Insert pw -> ")
-            supabase.auth.sign_in_with_password(credentials)
-            #create.insert_contract(supabase)
+            credentials["password"] = getpass("Insert pw -> ")
+            
+            try:
+                supabase.auth.sign_in_with_password(credentials)
+                create.insert_contract(supabase)
+            except:
+                print("credenziali errate:")
+                print(credentials)
+
+            
                         
         case "E" | "e" | "exit":
             print("Terminate")
