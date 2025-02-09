@@ -1,14 +1,26 @@
 import settings
-import read
+import utilities
 import create
+import read
+import update
 from supabase import create_client, Client
-from getpass import getpass
 
 supabase: Client = create_client(settings.url, settings.key)
 
 while True:
-    op = input("Digit operations:\nR (read)\nE (exit)\n-> ")
+    op = input("\n\nDigit operations:\nC (create)\nR (read)\nU (update)\nE (exit)\n-> ")
     match op:
+        case "C" | "c" | "create":
+            credentials = utilities.ask_for_credentials
+            try:
+                supabase.auth.sign_in_with_password(credentials)
+                print("Logged in successfully")
+            except:
+                print(f"Wrong credentials: {credentials}")
+                continue
+            
+            create.insert_contract(supabase)
+
         case "R" | "r" | "read":
             op2 = input("Which table do you want to read?\nP (presidenti)\nC (contratti)\n-> ")
             match op2:
@@ -32,20 +44,18 @@ while True:
 
                 case _:
                     print(op2 + ": table not available")
-        case "C" | "c" | "create":
-            credentials = {}
-            credentials["email"] = input("Insert mail -> ")
-            credentials["password"] = getpass("Insert pw -> ")
-            
+        
+        case "U" | "u" | "update":
+            credentials = utilities.ask_for_credentials
             try:
                 supabase.auth.sign_in_with_password(credentials)
-                create.insert_contract(supabase)
+                print("Logged in successfully")
             except:
-                print("credenziali errate:")
-                print(credentials)
+                print(f"Wrong credentials: {credentials}")
+                continue
 
-            
-                        
+            update.update_cash(supabase)
+
         case "E" | "e" | "exit":
             print("Terminate")
             break
