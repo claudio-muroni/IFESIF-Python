@@ -59,8 +59,15 @@ while True:
                 except:
                     print(f"Wrong credentials: {credentials}")
                     continue
-
-            update.update_cash(supabase)
+            
+            op3 = input("Update cash for\n1 (one presidente)\nAll (all presidents)\nEx (exchange)\n-> ")
+            match op3:
+                case "1":
+                    update.update_cash_for_pres(supabase)
+                case "All" | "all":
+                    update.update_cash_for_all(supabase)
+                case "Ex" | "ex":
+                    update.exchange_cash(supabase)
         
         case "D" | "d" | "delete":
             if not logged_in:
