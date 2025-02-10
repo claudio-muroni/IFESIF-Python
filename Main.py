@@ -3,23 +3,27 @@ import utilities
 import create
 import read
 import update
+import delete
 from supabase import create_client, Client
 
 supabase: Client = create_client(settings.url, settings.key)
+logged_in = False
 
 while True:
-    op = input("\n\nDigit operations:\nC (create)\nR (read)\nU (update)\nE (exit)\n-> ")
+    op = input("\n\nDigit operations:\nC (create)\nR (read)\nU (update)\nD (delete)\nE (exit)\n-> ")
     match op:
         case "C" | "c" | "create":
-            credentials = utilities.ask_for_credentials
-            try:
-                supabase.auth.sign_in_with_password(credentials)
-                print("Logged in successfully")
-            except:
-                print(f"Wrong credentials: {credentials}")
-                continue
+            if not logged_in:
+                credentials = utilities.ask_for_credentials()
+                try:
+                    supabase.auth.sign_in_with_password(credentials)
+                    print("Logged in successfully")
+                    logged_in = True
+                except:
+                    print(f"Wrong credentials: {credentials}")
+                    continue
             
-            create.insert_contract(supabase)
+            create.create_contract(supabase)
 
         case "R" | "r" | "read":
             op2 = input("Which table do you want to read?\nP (presidenti)\nC (contratti)\n-> ")
@@ -46,15 +50,30 @@ while True:
                     print(op2 + ": table not available")
         
         case "U" | "u" | "update":
-            credentials = utilities.ask_for_credentials
-            try:
-                supabase.auth.sign_in_with_password(credentials)
-                print("Logged in successfully")
-            except:
-                print(f"Wrong credentials: {credentials}")
-                continue
+            if not logged_in:
+                credentials = utilities.ask_for_credentials()
+                try:
+                    supabase.auth.sign_in_with_password(credentials)
+                    print("Logged in successfully")
+                    logged_in = True
+                except:
+                    print(f"Wrong credentials: {credentials}")
+                    continue
 
             update.update_cash(supabase)
+        
+        case "D" | "d" | "delete":
+            if not logged_in:
+                credentials = utilities.ask_for_credentials()
+                try:
+                    supabase.auth.sign_in_with_password(credentials)
+                    print("Logged in successfully")
+                    logged_in = True
+                except:
+                    print(f"Wrong credentials: {credentials}")
+                    continue
+
+            delete.delete_contract(supabase)
 
         case "E" | "e" | "exit":
             print("Terminate")

@@ -1,4 +1,4 @@
-def insert_contract(supabase):
+def create_contract(supabase):
     pres = input("Presidente -> ")
     ruolo = input("Ruolo -> ")
     giocatore = input("Giocatore -> ")
@@ -10,7 +10,7 @@ def insert_contract(supabase):
         id = response.data[0]["id"]
         cognome = response.data[0]["cognome"]
     except:
-        print("\nERROR")
+        print("\nError retrieving president's data")
         return
 
     response = supabase.table("stagioni").select("*").eq("attiva", True).execute()
