@@ -1,19 +1,24 @@
 import settings
 import utilities
 
+# PAGE
+
 def create_page(supabase):
     if not settings.logged_in:
         credentials = utilities.ask_for_credentials()
         try:
             supabase.auth.sign_in_with_password(credentials)
-            print("Logged in successfully")
+            print("\nLogged in successfully")
             settings.logged_in = True
         except:
-            print(f"Wrong credentials: {credentials}")
+            print(f"\nWrong credentials: {credentials}")
             return
     
+    print("")
     create_contract(supabase)
     return
+
+# METHODS
 
 def create_contract(supabase):
     pres = input("Presidente -> ")

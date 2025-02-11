@@ -1,3 +1,5 @@
+# PAGE
+
 def read_page(supabase):
     op2 = input("Which table do you want to read?\nP (presidenti)\nC (contratti)\n-> ")
     match op2:
@@ -21,6 +23,8 @@ def read_page(supabase):
         case _:
             print(op2 + ": table not available")
     return
+
+#METHODS
 
 def read_all_from_table(supabase, table):
     return supabase.table(table).select("*").execute()

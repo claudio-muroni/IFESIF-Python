@@ -8,14 +8,14 @@ def update_page(supabase):
         credentials = utilities.ask_for_credentials()
         try:
             supabase.auth.sign_in_with_password(credentials)
-            print("Logged in successfully")
+            print("\nLogged in successfully")
             settings.logged_in = True
         except:
-            print(f"Wrong credentials: {credentials}")
+            print(f"\nWrong credentials: {credentials}")
             return
     
-    op3 = input("Update cash for\n1 (one presidente)\nAll (all presidents)\nEx (exchange)\n-> ")
-    match op3:
+    op2 = input("\nUpdate cash for\n1 (one presidente)\nAll (all presidents)\nEx (exchange)\n-> ")
+    match op2:
         case "1":
             update_cash_for_pres(supabase)
         case "All" | "all":
