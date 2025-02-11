@@ -1,3 +1,31 @@
+import settings
+import utilities
+
+# PAGE
+
+def update_page(supabase):
+    if not settings.logged_in:
+        credentials = utilities.ask_for_credentials()
+        try:
+            supabase.auth.sign_in_with_password(credentials)
+            print("Logged in successfully")
+            settings.logged_in = True
+        except:
+            print(f"Wrong credentials: {credentials}")
+            return
+    
+    op3 = input("Update cash for\n1 (one presidente)\nAll (all presidents)\nEx (exchange)\n-> ")
+    match op3:
+        case "1":
+            update_cash_for_pres(supabase)
+        case "All" | "all":
+            update_cash_for_all(supabase)
+        case "Ex" | "ex":
+            exchange_cash(supabase)
+    return
+
+# METHODS
+
 def update_cash_for_pres(supabase):
     pres = input("Presidente: -> ")
     cash_diff = input("+/- cash: -> ")
@@ -18,8 +46,6 @@ def update_cash_for_pres(supabase):
 
     return
 
-
-
 def update_cash_for_all(supabase):
     cash_diff = input("+/- cash: -> ")
     response = supabase.table("presidenti").select("*").execute()
@@ -36,8 +62,6 @@ def update_cash_for_all(supabase):
             continue
     
     return
-
-
 
 def exchange_cash(supabase):
 
