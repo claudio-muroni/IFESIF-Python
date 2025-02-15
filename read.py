@@ -1,12 +1,13 @@
+import pandas as pd
+
 # PAGE
 
 def read_page(supabase):
-    op2 = input("Which table do you want to read?\nP (presidenti)\nC (contratti)\n-> ")
+    op2 = input("\nWhich table do you want to read?\nP (presidenti)\nC (contratti)\n-> ")
     match op2:
         case "P" | "p" | "presidenti":
-            response = read_all_from_table(supabase, "presidenti")
-            print(response)
-        
+            read_presidents(supabase)
+            
         case "C" | "c" | "contratti":
             op3 = input("Which president?\nCLA (Claudio)\nFLA (Flavio)\n-> ")
             match op3:
@@ -15,8 +16,8 @@ def read_page(supabase):
                 case _: pres = ""
                     
             if pres!= "":
-                response = read_contracts_for_pres(supabase, pres)
-                print(response)
+                read_contracts_for_pres(supabase, pres)
+                
             else:
                 print(op3 + ": president not available")
 
@@ -26,8 +27,16 @@ def read_page(supabase):
 
 #METHODS
 
-def read_all_from_table(supabase, table):
-    return supabase.table(table).select("*").execute()
+def read_presidents(supabase):
+    response = supabase.table("presidenti").select("nome", "cognome", "cash").execute()
+    df = pd.DataFrame(response.data)
+    print(df)
+
+    return
 
 def read_contracts_for_pres(supabase, pres):
-    return supabase.table("contratti").select("ruolo","giocatore","anno","prezzo","durata").eq("nome_presidente", pres).execute()
+    response = supabase.table("contratti").select("ruolo","giocatore","anno","prezzo","prezzo_rinnovo","durata").eq("nome_presidente", pres).execute()
+    df = pd.DataFrame(response.data)
+    print(df)
+    
+    return
