@@ -74,22 +74,26 @@ def next_season(supabase):
                     new_cash["cash"] = updated_cash
                     supabase.table("presidenti").update(new_cash).eq("nome", pres).execute()
 
-                    contract_list = supabase.table("contratti").select("anno","prezzo", "giocatore").eq("nome_presidente", pres).execute()
+                    contract_list = supabase.table("contratti").select("anno","prezzo","giocatore","durata").eq("nome_presidente", pres).execute()
                     for j in range(len(contract_list.data)):
                         anno_contratto = contract_list.data[j]["anno"]
                         prezzo = contract_list.data[j]["prezzo"]
                         giocatore = contract_list.data[j]["giocatore"]
+                        durata = contract_list.data[j]["durata"]
 
-                        rinnovo = math.ceil(prezzo * (1 + 0.2*(new_anno - anno_contratto)))
-                        new_prezzo_rinnovo = {}
-                        new_prezzo_rinnovo["prezzo_rinnovo"] = rinnovo
+                        if anno_contratto + durata > new_anno:
+                            rinnovo = math.ceil(prezzo * (1 + 0.2*(new_anno - anno_contratto)))
+                            new_prezzo_rinnovo = {}
+                            new_prezzo_rinnovo["prezzo_rinnovo"] = rinnovo
 
-                        supabase.table("contratti").update(new_prezzo_rinnovo).eq("giocatore", giocatore).execute()
-                        
-                        updated_cash = updated_cash - rinnovo
-                        new_cash = {}
-                        new_cash["cash"] = updated_cash
-                        supabase.table("presidenti").update(new_cash).eq("nome", pres).execute()
+                            supabase.table("contratti").update(new_prezzo_rinnovo).eq("giocatore", giocatore).execute()
+                            
+                            updated_cash = updated_cash - rinnovo
+                            new_cash = {}
+                            new_cash["cash"] = updated_cash
+                            supabase.table("presidenti").update(new_cash).eq("nome", pres).execute()
+                        else:
+                            supabase.table('contratti').delete().eq('giocatore', giocatore).execute()
 
                 print(f"Cash updated successfully for all presidents")
                 
