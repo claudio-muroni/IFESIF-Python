@@ -53,6 +53,7 @@ def create_contract(supabase):
             contract["anno"] = anno
             contract["durata"] = durata
             contract["prezzo"] = prezzo
+            contract["prezzo_rinnovo"] = prezzo
             supabase.table("contratti").insert(contract).execute()
             supabase.table("presidenti").update(new_cash).eq("nome", pres).execute()
             print("\nContract added successfully")
