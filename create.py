@@ -40,6 +40,7 @@ def create_contract(supabase):
 
     response = supabase.table("stagioni").select("*").eq("attiva", True).execute()
     anno = response.data[0]["anno"]
+    id_stagione = response.data[0]["id"]
 
     response = supabase.table("contratti").select("*", count="exact").eq("giocatore", giocatore).execute()
     if response.count == 0 and new_cash["cash"] >= 0:
@@ -51,6 +52,7 @@ def create_contract(supabase):
             contract["ruolo"] = ruolo
             contract["giocatore"] = giocatore
             contract["anno"] = anno
+            contract["id_stagione"] = id_stagione
             contract["durata"] = durata
             contract["prezzo"] = prezzo
             contract["prezzo_rinnovo"] = prezzo
