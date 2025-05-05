@@ -49,8 +49,9 @@ def read_contracts_for_pres(supabase, pres):
     return
 
 def read_rankings_for_year_competition(supabase, year, comp):
-    response = supabase.table("classifiche").select("*").eq("anno", year).eq("competizione", comp).execute()
+    response = supabase.table("classifiche").select("anno","competizione","posizione","nome_presidente","cognome_presidente","punti").eq("anno", year).eq("competizione", comp).execute()
     df = pd.DataFrame(response.data)
+    df = df.sort_values(by="posizione")
     print(df)
     
     return
