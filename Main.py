@@ -4,12 +4,13 @@ import read
 import update
 import delete
 import switch_season
+import print_carrd
 from supabase import create_client, Client
 
 supabase: Client = create_client(settings.url, settings.key)
 
 while True:
-    op = input("\nDigit operations:\nC (create contracts)\nR (read tables)\nU (update cash)\nD (delete contracts)\nM (manage seasons)\nE (exit)\n-> ")
+    op = input("\nDigit operations:\nC (create contracts)\nR (read tables)\nU (update cash)\nD (delete contracts)\nM (manage seasons)\nP (print)\nE (exit)\n-> ")
     match op:
         case "C" | "c" | "create":
             create.create_page(supabase)
@@ -25,6 +26,9 @@ while True:
 
         case "M" | "m" | "manage":
             switch_season.switch_season_page(supabase)
+
+        case "P" | "p" | "print":
+            print_carrd.print_page(supabase)
 
         case "E" | "e" | "exit":
             print("Terminate")
