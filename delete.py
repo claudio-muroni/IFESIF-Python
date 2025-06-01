@@ -52,7 +52,7 @@ def refund_contract(supabase):
             supabase.table("presidenti").update(new_cash).eq("nome", pres).execute()
             supabase.table('contratti').delete().eq('giocatore', giocatore).execute()
 
-            print("Contract refunded successfully")
+            print(f"Contract refunded successfully\n{pres}: {giocatore} +{cash_diff}")
         except:
             print("\nERROR")
     else:
