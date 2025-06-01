@@ -14,7 +14,15 @@ def delete_page(supabase):
             print(f"Wrong credentials: {credentials}")
             return
 
-    refund_contract(supabase)
+    op2 = input("\nD (delete)\nR (refund)\n-> ")
+    match op2:
+        case "D" | "d" | "delete":
+            delete_contract(supabase)
+        case "R" | "r" | "refund":
+            refund_contract(supabase)
+        case _:
+            print(op2 + ": operation not available")
+
     return
 
 # METHODS
@@ -26,7 +34,7 @@ def delete_contract(supabase):
     if response.count != 0:
         try:
             supabase.table('contratti').delete().eq('giocatore', giocatore).execute()
-            print("Contract deleted successfully")
+            print(f"Contract deleted successfully\n{giocatore} +0")
         except:
             print("\nERROR")
     else:
