@@ -1,4 +1,4 @@
 attempts.py
 **/__pycache__/
-**/venv/
-*.txt
+**/.venv/
+carrd_*.txt
