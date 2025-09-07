@@ -1,3 +1,4 @@
 attempts.py
 **/__pycache__/
+**/venv/
 *.txt
