@@ -21,16 +21,16 @@ def create_page(supabase):
 # METHODS
 
 def create_contract(supabase):
-    pres = input("Presidente -> ")
+    cognome = input("Presidente (cognome) -> ")
     ruolo = input("Ruolo -> ")
     giocatore = input("Giocatore -> ")
     durata = input("Durata contratto -> ")
     prezzo = input("Prezzo d'acquisto -> ")
     
     try:
-        response = supabase.table("presidenti").select("*").eq("nome", pres).execute()
+        response = supabase.table("presidenti").select("*").eq("cognome", cognome).execute()
         id = response.data[0]["id"]
-        cognome = response.data[0]["cognome"]
+        nome = response.data[0]["nome"]
         cash = response.data[0]["cash"]
         new_cash = {}
         new_cash["cash"] = cash - int(prezzo)
@@ -47,7 +47,7 @@ def create_contract(supabase):
         try:
             contract = {}
             contract["id_presidente"] = id
-            contract["nome_presidente"] = pres
+            contract["nome_presidente"] = nome
             contract["cognome_presidente"] = cognome
             contract["ruolo"] = ruolo
             contract["giocatore"] = giocatore
@@ -57,7 +57,7 @@ def create_contract(supabase):
             contract["prezzo"] = prezzo
             contract["prezzo_rinnovo"] = prezzo
             supabase.table("contratti").insert(contract).execute()
-            supabase.table("presidenti").update(new_cash).eq("nome", pres).execute()
+            supabase.table("presidenti").update(new_cash).eq("cognome", cognome).execute()
             print("\nContract added successfully")
         except:
             print("\nERROR")
