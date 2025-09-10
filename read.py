@@ -35,7 +35,7 @@ def read_page(supabase):
 #METHODS
 
 def read_presidents(supabase):
-    response = supabase.table("presidenti").select("nome", "cognome", "cash").execute()
+    response = supabase.table("presidenti").select("nome", "cognome", "cash").eq("attivo", True).execute()
     df = pd.DataFrame(response.data)
     print(df)
 
