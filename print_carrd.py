@@ -12,13 +12,13 @@ def print_page(supabase):
 #METHODS
 def print_carrd_contracts(supabase):
 
-    response = supabase.table("presidenti").select("nome").execute()
+    response = supabase.table("presidenti").select("cognome").eq("attivo", True).execute()
     for i in range(len(response.data)):
-        pres = response.data[i]["nome"]
+        pres = response.data[i]["cognome"]
         with open(f"carrd_{pres}.txt", 'w') as f:
             f.write("")
 
-        contract_list = supabase.table("contratti").select("ruolo","anno","prezzo","prezzo_rinnovo","giocatore","durata").eq("nome_presidente", pres).order("ruolo").execute()
+        contract_list = supabase.table("contratti").select("ruolo","anno","prezzo","prezzo_rinnovo","giocatore","durata").eq("cognome_presidente", pres).order("ruolo").execute()
         for j in range(len(contract_list.data)):
             carrd_row = ""
             ruolo = contract_list.data[j]["ruolo"]
